@@ -2,14 +2,12 @@ package ru.rail.services;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 import ru.rail.dao.StudentDao;
 import ru.rail.dto.StudentDto;
 import ru.rail.entity.Student;
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +30,7 @@ class StudentServiceTest {
     @Test
     public void testSaveStudentService() {
         StudentDto studentDto = new StudentDto();
-        studentDto.setName("Ildus");
+        studentDto.setName("Albert");
         studentDto.setCourseName("JDBC");
 
         studentService.saveStudentService(studentDto);
@@ -40,10 +38,15 @@ class StudentServiceTest {
         try (Session session = sessionFactory.openSession()) {
             Student savedStudent = session.get(Student.class, studentDto.getId());
             assertNotNull(savedStudent);
-            assertEquals("Ildus", savedStudent.getName());
+            assertEquals("Albert", savedStudent.getName());
             assertNotNull(savedStudent.getCourse());
             assertEquals("JDBC", savedStudent.getCourse().getName());
         }
+    }
+
+    @Test
+    public void testDeleteService() {
+        studentService.deleteStudentService(2L);
     }
 
     @AfterAll
@@ -57,7 +60,6 @@ class StudentServiceTest {
     @Test
     public void testDeleteStudentsByCourseWithLowPerformance() {
     }
-
 
 
 }

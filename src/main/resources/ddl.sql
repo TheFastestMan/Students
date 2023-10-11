@@ -24,8 +24,8 @@ CREATE TABLE student_profile
 );
 
 ALTER TABLE students
-    ADD FOREIGN KEY (course_id) REFERENCES courses (course_id) ON DELETE CASCADE;
+    ADD FOREIGN KEY (course_id) REFERENCES courses (course_id) ON DELETE SET NULL;
 
 ALTER TABLE student_profile
-    ADD FOREIGN KEY (student_id) REFERENCES students (student_id) ON DELETE CASCADE;
+    ADD FOREIGN KEY (student_id) REFERENCES students (student_id) ON UPDATE CASCADE;
 

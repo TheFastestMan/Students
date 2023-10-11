@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.rail.entity.Course;
+import ru.rail.entity.Student;
 
+import javax.persistence.*;
 import java.util.List;
 
 
 public class CourseDto {
-
+    private Long id;
+    private String name;
 
 }

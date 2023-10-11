@@ -7,11 +7,13 @@ public class ConfigurationUtil {
 
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory configureWithAnnotatedClass(Class<?> annotatedClass) {
+    public static SessionFactory configureWithAnnotatedClasses(Class<?>... annotatedClasses) {
         try {
             Configuration configuration = new Configuration();
             configuration.configure();
-            configuration.addAnnotatedClass(annotatedClass);
+            for (Class<?> annotatedClass : annotatedClasses) {
+                configuration.addAnnotatedClass(annotatedClass);
+            }
             sessionFactory = configuration.buildSessionFactory();
             return sessionFactory;
         } catch (Exception e) {
@@ -23,4 +25,3 @@ public class ConfigurationUtil {
         return sessionFactory;
     }
 }
-

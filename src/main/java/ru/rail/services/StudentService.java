@@ -1,6 +1,5 @@
 package ru.rail.services;
 
-import org.mapstruct.ap.spi.MapStructProcessingEnvironment;
 import org.modelmapper.ModelMapper;
 import ru.rail.dao.CourseDao;
 import ru.rail.dao.StudentDao;
@@ -9,10 +8,7 @@ import ru.rail.dto.StudentDto;
 import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class StudentService {
 
@@ -40,7 +36,7 @@ public class StudentService {
         return course;
     }
 
-    public void saveStudentService(StudentDto studentDto){
+    public void saveStudentService(StudentDto studentDto) {
         Student student = convertStudentDtoToStudent(studentDto);
 
         // Fetch the course by its name or create a new one if it doesn't exist
@@ -51,12 +47,13 @@ public class StudentService {
         studentDto.setId(student.getId());
     }
 
+    public void deleteStudentService(Long id) {
+        studentDao.deleteStudent(id);
+    }
 
     public Student convertStudentDtoToStudent(StudentDto studentDto) {
         return modelMapper.map(studentDto, Student.class);
     }
-
-
 
 
 }

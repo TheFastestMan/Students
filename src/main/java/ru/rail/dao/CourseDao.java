@@ -6,6 +6,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import ru.rail.entity.Course;
+import ru.rail.entity.Student;
+import ru.rail.entity.StudentProfile;
 import ru.rail.util.ConfigurationUtil;
 
 import javax.persistence.Query;
@@ -20,7 +22,8 @@ public class CourseDao {
     }
 
     static {
-        sessionFactory = ConfigurationUtil.configureWithAnnotatedClass(Course.class);
+        sessionFactory = ConfigurationUtil
+                .configureWithAnnotatedClasses(Course.class, StudentProfile.class, Student.class);
     }
 
     public Course saveCourse(Course course) {
@@ -45,6 +48,31 @@ public class CourseDao {
             return (Course) criteria.uniqueResult();
         } catch (Exception e) {
             throw new RuntimeException("Error finding course by name", e);
+        }
+    }
+
+    public void deleteCourse(Long id) {
+        Transaction transaction = null;
+
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            Course course = session.get(Course.class, id);
+
+            if (course != null) {
+                for (Student student : course.getStudents()) {
+                    student.setCourse(null); // set the student's course to null
+                    session.update(student);  // persist the change
+                }
+                session.delete(course);  // now, delete the course
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Error deleting course", e);
         }
     }
 

@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "courses")
 public class Course {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -21,6 +20,7 @@ public class Course {
 
     @Column(name = "course_name")
     private String name;
+
     @OneToMany(mappedBy = "course")
     private List<Student> students;
 }

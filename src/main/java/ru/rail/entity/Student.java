@@ -19,6 +19,7 @@ public class Student {
 
     @Column(name = "student_name")
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
