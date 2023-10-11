@@ -35,4 +35,8 @@ public class StudentDao {
         }
     }
 
+    public void deleteStudent(){
+
+    }
+
 }
