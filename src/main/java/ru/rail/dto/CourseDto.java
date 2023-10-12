@@ -15,5 +15,4 @@ import java.util.List;
 public class CourseDto {
     private Long id;
     private String name;
-
 }

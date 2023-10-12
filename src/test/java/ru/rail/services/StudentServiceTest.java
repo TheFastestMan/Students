@@ -5,8 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 import ru.rail.dao.StudentDao;
+import ru.rail.dao.StudentProfileDao;
 import ru.rail.dto.StudentDto;
-import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 
 import java.util.List;
@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StudentServiceTest {
     private static SessionFactory sessionFactory;
-    private StudentDao studentDao;
+    private CourseService courseService;
     private StudentService studentService;
 
     @BeforeAll
     public static void setup() {
-        Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
-        sessionFactory = configuration.buildSessionFactory();
+        sessionFactory = StudentProfileDao.getSessionFactory();
     }
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
+        courseService = CourseService.getInstance();
         studentService = StudentService.getInstance();
     }
 
@@ -72,12 +72,6 @@ class StudentServiceTest {
         studentService.deleteStudentService(15L);
     }
 
-    @AfterAll
-    public static void cleanup() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            sessionFactory.close();
-        }
-    }
 
     @Test
     public void testFindAllStudentsByCourseName() {
@@ -131,5 +125,11 @@ class StudentServiceTest {
     public void testDeleteStudentsByCourseWithLowPerformance() {
     }
 
+    @AfterAll
+    public static void cleanup() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            sessionFactory.close();
+        }
+    }
 
 }

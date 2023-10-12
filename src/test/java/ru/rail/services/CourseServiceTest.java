@@ -23,21 +23,20 @@ class CourseServiceTest {
         sessionFactory = CourseDao.getSessionFactory();
     }
 
-
     @BeforeEach
     public void setup() {
         courseService = CourseService.getInstance();
     }
 
-
     @Test
     public void testDeleteCourse() {
         courseService.deleteCourseService(10L);
     }
+
     @Test
     public void testSaveCourse() {
         CourseDto initialCourse = new CourseDto();
-        initialCourse.setName("New");
+        initialCourse.setName("Java");
         courseService.saveCourseService(initialCourse);
     }
 
@@ -49,8 +48,7 @@ class CourseServiceTest {
         Course savedCourse = courseService.saveCourseService(initialCourse);
         Long savedCourseId = savedCourse.getId();
 
-
-        // Verify the initial state
+        // Verify
         try (Session session = sessionFactory.openSession()) {
             Course fetchedCourse = session.get(Course.class, savedCourseId);
             assertNotNull(fetchedCourse);
@@ -62,7 +60,7 @@ class CourseServiceTest {
         initialCourse.setName("BBB");
         courseService.updateCourseService(initialCourse);
 
-        // Step 3: Assert the changes
+        // Step 3: Assert
         try (Session session = sessionFactory.openSession()) {
             Course updatedCourse = session.get(Course.class, savedCourseId);
             assertNotNull(updatedCourse);

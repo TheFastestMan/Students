@@ -43,10 +43,10 @@ public class StudentDao {
         }
     }
 
-    public List<Student> findByCourseAllStudents(String courseName){
+    public List<Student> findByCourseAllStudents(String courseName) {
         try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(Student.class, "student");
-            criteria.createAlias("student.course", "course"); // Assuming each student has a 'course' attribute pointing to Course entity
+            criteria.createAlias("student.course", "course");
             criteria.add(Restrictions.eq("course.name", courseName));
             return criteria.list();
         } catch (Exception e) {

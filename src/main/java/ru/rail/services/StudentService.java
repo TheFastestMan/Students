@@ -13,11 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentService {
-
     private static final StudentService INSTANCE = new StudentService();
-
     private final StudentDao studentDao = StudentDao.getInstance();
-
     private final CourseDao courseDao = CourseDao.getInstance();
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -54,8 +51,8 @@ public class StudentService {
         return studentDao.findByName(name);
     }
 
-    public List<Student> findByCourseAllStudentsService(String courseName){
-       return studentDao.findByCourseAllStudents(courseName);
+    public List<Student> findByCourseAllStudentsService(String courseName) {
+        return studentDao.findByCourseAllStudents(courseName);
     }
 
     public Student convertStudentDtoToStudent(StudentDto studentDto) {

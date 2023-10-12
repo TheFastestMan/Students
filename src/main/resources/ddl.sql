@@ -1,4 +1,6 @@
 ALTER SEQUENCE students_student_id_seq RESTART WITH 1;
+ALTER SEQUENCE courses_course_id_seq RESTART WITH 1;
+ALTER SEQUENCE student_profile_profile_id_seq RESTART WITH 1;
 
 -- Courses Table
 CREATE TABLE courses
@@ -27,5 +29,5 @@ ALTER TABLE students
     ADD FOREIGN KEY (course_id) REFERENCES courses (course_id) ON DELETE SET NULL;
 
 ALTER TABLE student_profile
-    ADD FOREIGN KEY (student_id) REFERENCES students (student_id) ON UPDATE CASCADE;
+    ADD FOREIGN KEY (student_id) REFERENCES students (student_id) ON UPDATE CASCADE ON DELETE CASCADE;
 

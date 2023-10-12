@@ -23,4 +23,7 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    private StudentProfile studentProfile;
 }
