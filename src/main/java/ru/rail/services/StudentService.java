@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import ru.rail.dao.CourseDao;
 import ru.rail.dao.StudentDao;
 
+import ru.rail.dto.CourseDto;
 import ru.rail.dto.StudentDto;
 import ru.rail.entity.Course;
 import ru.rail.entity.Student;
@@ -24,36 +25,45 @@ public class StudentService {
     }
 
     private Course fetchOrCreateCourse(String courseName) {
-        // Try to fetch the course from the database (you'll need a method in your DAO for this)
         Course course = courseDao.findByName(courseName);
 
-        // If the course doesn't exist, create a new one and save it
         if (course == null) {
             course = new Course(null, courseName, new ArrayList<>());
-            // Here, save the course using a method in your DAO (you'll need to implement this)
             course = courseDao.saveCourse(course);
         }
         return course;
     }
 
-    public void saveStudentService(StudentDto studentDto) {
+    public Student saveStudentService(StudentDto studentDto) {
         Student student = convertStudentDtoToStudent(studentDto);
 
-        // Fetch the course by its name or create a new one if it doesn't exist
         Course course = fetchOrCreateCourse(studentDto.getCourseName());
-        student.setCourse(course);  // Set the course on the student
+        student.setCourse(course);
 
         student = studentDao.saveStudent(student);
         studentDto.setId(student.getId());
+        return student;
     }
 
     public void deleteStudentService(Long id) {
         studentDao.deleteStudent(id);
     }
 
+    public Student findByNameService(String name) {
+        return studentDao.findByName(name);
+    }
+
     public Student convertStudentDtoToStudent(StudentDto studentDto) {
         return modelMapper.map(studentDto, Student.class);
     }
 
+    public Student updateStudentService(StudentDto studentDto) {
+        Student existingStudent = studentDao.findById(studentDto.getId());
+        if (existingStudent == null) {
+            throw new RuntimeException("Course not found with id: " + studentDto.getId());
+        }
+        existingStudent.setName(studentDto.getName());
+        return studentDao.updateStudent(existingStudent);
+    }
 
 }

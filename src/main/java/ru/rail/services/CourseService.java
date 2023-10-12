@@ -27,11 +27,30 @@ public class CourseService {
         return courseDao.saveCourse(course);
     }
 
+    public Course updateCourseService(CourseDto courseDto) {
+        Course existingCourse = courseDao.findById(courseDto.getId());
+        if (existingCourse == null) {
+            throw new RuntimeException("Course not found with id: " + courseDto.getId());
+        }
+        existingCourse.setName(courseDto.getName());
+        return courseDao.updateCourse(existingCourse);
+    }
+
+    public CourseDto findByNameService(String name) {
+        Course course = courseDao.findByName(name);
+        CourseDto courseDto = convertCourseToCourseDto(course);
+        return courseDto;
+    }
+
     public void deleteCourseService(Long id) {
         courseDao.deleteCourse(id);
     }
 
     public Course convertCourseDtoToCourse(CourseDto courseDto) {
         return modelMapper.map(courseDto, Course.class);
+    }
+
+    public CourseDto convertCourseToCourseDto(Course course) {
+        return modelMapper.map(course, CourseDto.class);
     }
 }

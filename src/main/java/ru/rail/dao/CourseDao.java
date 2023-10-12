@@ -10,9 +10,6 @@ import ru.rail.entity.Student;
 import ru.rail.entity.StudentProfile;
 import ru.rail.util.ConfigurationUtil;
 
-import javax.persistence.Query;
-import java.util.List;
-
 public class CourseDao {
     private static final CourseDao INSTANCE = new CourseDao();
     private static SessionFactory sessionFactory;
@@ -21,9 +18,17 @@ public class CourseDao {
         return INSTANCE;
     }
 
-    static {
+    public static void initializeSessionFactory() {
         sessionFactory = ConfigurationUtil
                 .configureWithAnnotatedClasses(Course.class, StudentProfile.class, Student.class);
+    }
+
+    static {
+        initializeSessionFactory();
+    }
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     public Course saveCourse(Course course) {
@@ -32,12 +37,12 @@ public class CourseDao {
             transaction = session.beginTransaction();
             session.save(course);
             transaction.commit();
-            return course; // Return the saved course
+            return course;
         } catch (Exception e) {
             if (transaction != null) {
-                transaction.rollback(); // Rollback transaction on error
+                transaction.rollback();
             }
-            throw new RuntimeException("Error saving course", e); // Or any more specific exception handling you'd like
+            throw new RuntimeException("Error saving course", e);
         }
     }
 
@@ -61,10 +66,10 @@ public class CourseDao {
 
             if (course != null) {
                 for (Student student : course.getStudents()) {
-                    student.setCourse(null); // set the student's course to null
-                    session.update(student);  // persist the change
+                    student.setCourse(null);
+                    session.update(student);
                 }
-                session.delete(course);  // now, delete the course
+                session.delete(course);
             }
 
             transaction.commit();
@@ -73,6 +78,27 @@ public class CourseDao {
                 transaction.rollback();
             }
             throw new RuntimeException("Error deleting course", e);
+        }
+    }
+
+    public Course findById(Long courseId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Course.class, courseId);
+        }
+    }
+
+    public Course updateCourse(Course course) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(course);
+            transaction.commit();
+            return course;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Error updating course", e);
         }
     }
 
