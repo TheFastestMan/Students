@@ -10,6 +10,7 @@ import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentService {
 
@@ -51,6 +52,10 @@ public class StudentService {
 
     public Student findByNameService(String name) {
         return studentDao.findByName(name);
+    }
+
+    public List<Student> findByCourseAllStudentsService(String courseName){
+       return studentDao.findByCourseAllStudents(courseName);
     }
 
     public Student convertStudentDtoToStudent(StudentDto studentDto) {

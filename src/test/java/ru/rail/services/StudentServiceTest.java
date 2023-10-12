@@ -9,6 +9,8 @@ import ru.rail.dto.StudentDto;
 import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentServiceTest {
@@ -60,6 +62,10 @@ class StudentServiceTest {
         assertEquals("Arbi", foundStudent.getName(), "Student name did not match");
     }
 
+    @Test
+    public void testFindAllStudentByJavaEnterpriseCourse() {
+
+    }
 
     @Test
     public void testDeleteService() {
@@ -71,6 +77,24 @@ class StudentServiceTest {
         if (sessionFactory != null && !sessionFactory.isClosed()) {
             sessionFactory.close();
         }
+    }
+
+    @Test
+    public void testFindAllStudentsByCourseName() {
+        StudentDto studentDto = new StudentDto();
+        studentDto.setName("Ali");
+        studentDto.setCourseName("Java");
+        studentService.saveStudentService(studentDto);
+
+
+        List<Student> javaStudents = studentService.findByCourseAllStudentsService("Java");
+
+        assertFalse(javaStudents.isEmpty(), "Expected at least one student enrolled in the Java course");
+        assertTrue(javaStudents.stream()
+                .anyMatch(student -> "John".equals(student.getName())), "Expected to find student named John");
+
+        javaStudents.forEach(student -> System.out.println(student.getName()));
+
     }
 
     @Test
