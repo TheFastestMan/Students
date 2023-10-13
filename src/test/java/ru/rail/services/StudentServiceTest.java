@@ -6,7 +6,10 @@ import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 import ru.rail.dao.StudentDao;
 import ru.rail.dao.StudentProfileDao;
+import ru.rail.dto.CourseDto;
 import ru.rail.dto.StudentDto;
+import ru.rail.dto.StudentProfileDto;
+import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 
 import java.util.List;
@@ -17,6 +20,8 @@ class StudentServiceTest {
     private static SessionFactory sessionFactory;
     private CourseService courseService;
     private StudentService studentService;
+    private StudentProfileService studentProfileService;
+
 
     @BeforeAll
     public static void setup() {
@@ -27,22 +32,24 @@ class StudentServiceTest {
     public void setUp() {
         courseService = CourseService.getInstance();
         studentService = StudentService.getInstance();
+        studentProfileService = StudentProfileService.getInstance();
+
     }
 
     @Test
-    public void testSaveStudentService() {
+    public void testSaveStudentService() { //Добавить студента к курсу "Java Enterprise"
         StudentDto studentDto = new StudentDto();
-        studentDto.setName("Albert");
-        studentDto.setCourseName("JDBC");
+        studentDto.setName("Filus");
+        studentDto.setCourseName("Java Enterprise");
 
         studentService.saveStudentService(studentDto);
 
         try (Session session = sessionFactory.openSession()) {
             Student savedStudent = session.get(Student.class, studentDto.getId());
             assertNotNull(savedStudent);
-            assertEquals("Albert", savedStudent.getName());
+            assertEquals("Filus", savedStudent.getName());
             assertNotNull(savedStudent.getCourse());
-            assertEquals("JDBC", savedStudent.getCourse().getName());
+            assertEquals("Java Enterprise", savedStudent.getCourse().getName());
         }
     }
 
@@ -122,7 +129,36 @@ class StudentServiceTest {
     }
 
     @Test
-    public void testDeleteStudentsByCourseWithLowPerformance() {
+    public void testDeleteStudentsWithLowPerformanceInCourse() {   //Удалить всех студентов на курсе "Java Enterprise" со средней оценкой ниже 6
+        // 1. Create a course
+        CourseDto courseDto = new CourseDto();
+        courseDto.setName("Java Enterprise");
+        Course savedCourse = courseService.saveCourseService(courseDto);
+
+        // 2. Add students to the "Java Enterprise"
+        addStudent("Student1", "Java Enterprise", 5);  // Below the threshold
+        addStudent("Student2", "Java Enterprise", 6);  // On the threshold
+        addStudent("Student3", "Java Enterprise", 7);  // Above the threshold
+
+        // 3. Delete
+        studentService.deleteStudentsWithLowPerformanceInCourse("Java Enterprise", 6);
+
+        // 4. Validate
+        assertNull(studentService.findByNameService("Student1"));
+        assertNotNull(studentService.findByNameService("Student2"));
+        assertNotNull(studentService.findByNameService("Student3"));
+    }
+
+    private void addStudent(String name, String courseName, int performance) {
+        StudentDto studentDto = new StudentDto();
+        studentDto.setName(name);
+        studentDto.setCourseName(courseName);
+        Student savedStudent = studentService.saveStudentService(studentDto);
+
+        StudentProfileDto profileDto = new StudentProfileDto();
+        profileDto.setStudentName(name);
+        profileDto.setStudentAcademicPerformance(performance);
+        studentProfileService.saveStudentProfileService(profileDto);
     }
 
     @AfterAll

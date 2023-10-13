@@ -29,8 +29,8 @@ class CourseServiceTest {
     }
 
     @Test
-    public void testDeleteCourse() {
-        courseService.deleteCourseService(10L);
+    public void testDeleteCourse() { // Удалить курс "Java Enterprise"
+        courseService.deleteCourseService(1L);
     }
 
     @Test

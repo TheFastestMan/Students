@@ -105,4 +105,19 @@ public class StudentDao {
         }
     }
 
+    public List<Student> findStudentsWithLowPerformanceInCourse(String courseName, Integer performanceThreshold) {
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(Student.class, "student");
+            criteria.createAlias("student.course", "course");
+            criteria.createAlias("student.studentProfile", "profile");
+            criteria.add(Restrictions.eq("course.name", courseName));
+            criteria.add(Restrictions.lt("profile.academicPerformance", performanceThreshold));
+            return criteria.list();
+        } catch (Exception e) {
+            throw new RuntimeException("Error finding students with low performance in course", e);
+        }
+    }
+
+
+
 }

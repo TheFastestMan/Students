@@ -34,30 +34,30 @@ class StudentProfileServiceTest {
     }
 
     @Test
-    public void testSaveStudentService() {
+    public void testSaveStudentProfileService() {
         // 1. a course
-//        CourseDto courseDto = new CourseDto();
-//        courseDto.setName("Math");
-//        Course savedCourse = courseService.saveCourseService(courseDto);
+        CourseDto courseDto = new CourseDto();
+        courseDto.setName("Spring Boot");
+        Course savedCourse = courseService.saveCourseService(courseDto);
 
         // 2. a student
-//        StudentDto studentDto = new StudentDto();
-//        studentDto.setName("Lee");
-//        studentDto.setCourseName(savedCourse.getName());
-//        Student savedStudent = studentService.saveStudentService(studentDto);
+        StudentDto studentDto = new StudentDto();
+        studentDto.setName("Harrison");
+        studentDto.setCourseName(savedCourse.getName());
+        Student savedStudent = studentService.saveStudentService(studentDto);
 
         // Validate
-      //  assertEquals(savedCourse.getName(), savedStudent.getCourse().getName());
+        assertEquals(savedCourse.getName(), savedStudent.getCourse().getName());
 
         // 3. a student
         StudentProfileDto studentProfileDto = new StudentProfileDto();
-        studentProfileDto.setStudentAcademicPerformance(5);
-        studentProfileDto.setStudentName("Albert");
+        studentProfileDto.setStudentAcademicPerformance(7);
+        studentProfileDto.setStudentName("Harrison");
         StudentProfile savedStudentProfile = studentProfileService.saveStudentProfileService(studentProfileDto);
 
         // Validate
-        assertEquals("Albert", savedStudentProfile.getStudent().getName());
-        assertEquals(Integer.valueOf(5), savedStudentProfile.getAcademicPerformance());
+        assertEquals("Harrison", savedStudentProfile.getStudent().getName());
+        assertEquals(Integer.valueOf(7), savedStudentProfile.getAcademicPerformance());
     }
 
     @AfterAll
