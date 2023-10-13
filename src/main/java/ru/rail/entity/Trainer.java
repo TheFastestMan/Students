@@ -21,6 +21,12 @@ public class Trainer {
     @Column(name = "trainer_name")
     private String name;
 
-    @ManyToMany(mappedBy = "trainers")
+    @ManyToMany(fetch = FetchType.EAGER)
+
+    @JoinTable(
+            name = "course_trainers",
+            joinColumns = @JoinColumn(name = "trainer_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
     private List<Course> courses;
 }

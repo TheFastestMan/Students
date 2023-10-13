@@ -17,9 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainerServiceTest {
     private static SessionFactory sessionFactory;
-    private CourseService courseService;
+    private CourseService courseService = CourseService.getInstance();
 
-    private TrainerService trainerService;
+    private TrainerService trainerService = TrainerService.getInstance();
 
 
     @BeforeAll
@@ -42,7 +42,7 @@ public class TrainerServiceTest {
     @Test
     void saveTrainerTest() {
         TrainerDto trainerDto = new TrainerDto();
-        trainerDto.setName("J");
+        trainerDto.setName("Den");
         // set other fields for the Trainer...
 
         Long savedId = trainerService.saveTrainerService(trainerDto);
@@ -50,7 +50,7 @@ public class TrainerServiceTest {
 
         Trainer retrievedTrainer = trainerService.findTrainerById(savedId);
         assertNotNull(retrievedTrainer);
-        assertEquals("J", retrievedTrainer.getName());
+        assertEquals("Den", retrievedTrainer.getName());
         // assert other fields...
     }
 
@@ -58,4 +58,31 @@ public class TrainerServiceTest {
     void deleteTrainerTest() {
         trainerService.deleteTrainerService(1L);
     }
+
+    @Test
+    public void testSaveTrainerWithCoursesUsingDTO() {
+        // Create some course DTOs
+        CourseDto courseDto1 = new CourseDto(null, "Course III");
+        CourseDto courseDto2 = new CourseDto(null, "Course IV");
+
+        // Save courses and update DTOs with returned IDs
+        courseDto1.setId(courseService.saveCourseService(courseDto1).getId());
+        courseDto2.setId(courseService.saveCourseService(courseDto2).getId());
+
+        List<CourseDto> courseDtos = Arrays.asList(courseDto1, courseDto2);
+
+        // Create trainer DTO with course DTOs
+        TrainerDto trainerDto = new TrainerDto(null, "Trainer II", courseDtos);
+
+        // Save trainer with courses
+        TrainerDto savedTrainerDto = trainerService.saveTrainerWithCourses(trainerDto);
+
+        // Fetch trainer from database and verify
+        Trainer retrievedTrainer = trainerService.findTrainerById(savedTrainerDto.getId());
+        assertNotNull(retrievedTrainer);
+        assertEquals("Trainer II", retrievedTrainer.getName());
+        assertEquals(2, retrievedTrainer.getCourses().size());
+    }
+
+
 }

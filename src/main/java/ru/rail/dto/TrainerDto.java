@@ -12,5 +12,6 @@ import java.util.List;
 public class TrainerDto {
     private Long id;
     private String name;
+    private List<CourseDto> courses;  
 
 }

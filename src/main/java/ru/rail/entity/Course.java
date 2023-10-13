@@ -21,8 +21,9 @@ public class Course {
     @Column(name = "course_name")
     private String name;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<Student> students;
+
     @ManyToMany
     @JoinTable(
             name = "course_trainers",
