@@ -29,8 +29,8 @@ class CourseServiceTest {
     }
 
     @Test
-    public void testDeleteCourse() { // Удалить курс "Java Enterprise"
-        courseService.deleteCourseService(4L);
+    public void testDeleteCourse() { // Удалить курс "Java Enterprise" // Добавить тест для удаления курса.
+        courseService.deleteCourseService(19L);
     }
 
     @Test
@@ -41,30 +41,31 @@ class CourseServiceTest {
     }
 
     @Test
-    public void testUpdateCourse() {
+    public void testUpdateCourse() { //Добавить тест, для изменения курса.
         // Step 1: Set Up
-        CourseDto initialCourse = new CourseDto();
-        initialCourse.setName("O");
-        Course savedCourse = courseService.saveCourseService(initialCourse);
-        Long savedCourseId = savedCourse.getId();
+//        CourseDto initialCourse = new CourseDto();
+//        initialCourse.setName("Course IV()");
+//        Course savedCourse = courseService.saveCourseService(initialCourse);
+//        Long savedCourseId = savedCourse.getId();
+        CourseDto initialCourse = courseService.findByNameService("Course IV");
 
         // Verify
         try (Session session = sessionFactory.openSession()) {
-            Course fetchedCourse = session.get(Course.class, savedCourseId);
+            Course fetchedCourse = session.get(Course.class, initialCourse.getId());
             assertNotNull(fetchedCourse);
-            assertEquals("O", fetchedCourse.getName());
+            assertEquals("Course IV", fetchedCourse.getName());
         }
 
         // Step 2: Update
-        initialCourse.setId(savedCourseId);
-        initialCourse.setName("BBB");
+        initialCourse.setId(initialCourse.getId());
+        initialCourse.setName("Course IV (Updated)");
         courseService.updateCourseService(initialCourse);
 
         // Step 3: Assert
         try (Session session = sessionFactory.openSession()) {
-            Course updatedCourse = session.get(Course.class, savedCourseId);
+            Course updatedCourse = session.get(Course.class, initialCourse.getId());
             assertNotNull(updatedCourse);
-            assertEquals("BBB", updatedCourse.getName());
+            assertEquals("Course IV (Updated)", updatedCourse.getName());
         }
     }
 

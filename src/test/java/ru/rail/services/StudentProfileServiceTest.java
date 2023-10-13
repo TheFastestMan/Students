@@ -63,7 +63,7 @@ class StudentProfileServiceTest {
     }
 
 
-        @AfterAll
+    @AfterAll
     public static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();

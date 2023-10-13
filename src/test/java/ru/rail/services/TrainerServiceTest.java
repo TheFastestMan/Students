@@ -39,6 +39,7 @@ public class TrainerServiceTest {
             sessionFactory.close();
         }
     }
+
     @Test
     void saveTrainerTest() {
         TrainerDto trainerDto = new TrainerDto();

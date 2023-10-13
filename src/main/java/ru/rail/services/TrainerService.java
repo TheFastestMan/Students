@@ -44,12 +44,10 @@ public class TrainerService {
     }
 
     public TrainerDto saveTrainerWithCourses(TrainerDto trainerDto) {
-        // Convert DTOs to entities
         Trainer trainer = modelMapper.map(trainerDto, Trainer.class);
         List<Course> courses = trainerDto.getCourses().stream()
                 .map(courseDto -> {
                     if (courseDto.getId() == null) {
-                        // Assuming you have a method to save a course and return the entity
                         return courseDao.saveCourse(modelMapper.map(courseDto, Course.class));
                     }
                     return modelMapper.map(courseDto, Course.class);
@@ -57,10 +55,8 @@ public class TrainerService {
                 .collect(Collectors.toList());
         trainer.setCourses(courses);
 
-        // Save trainer with its associated courses
         trainerDao.saveTrainer(trainer);
 
-        // Convert back to DTO and return
         return modelMapper.map(trainer, TrainerDto.class);
     }
 
