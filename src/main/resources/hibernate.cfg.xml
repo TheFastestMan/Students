@@ -20,6 +20,7 @@
         <mapping class="ru.rail.entity.Trainer"/>
         <mapping class="ru.rail.entity.Course"/>
         <mapping class="ru.rail.entity.Student"/>
+        <mapping class="ru.rail.entity.StudentProfile"/>
 
 
 

@@ -7,6 +7,7 @@ import ru.rail.dao.StudentDao;
 import ru.rail.dto.StudentDto;
 import ru.rail.entity.Course;
 import ru.rail.entity.Student;
+import ru.rail.entity.Trainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class StudentService {
         Course course = courseDao.findByName(courseName);
 
         if (course == null) {
-            course = new Course(null, courseName, new ArrayList<>());
+            course = new Course(null, courseName, new ArrayList<Student>(), new ArrayList<Trainer>());
             course = courseDao.saveCourse(course);
         }
         return course;

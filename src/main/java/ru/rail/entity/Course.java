@@ -23,5 +23,12 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private List<Student> students;
+    @ManyToMany
+    @JoinTable(
+            name = "course_trainers",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id")
+    )
+    private List<Trainer> trainers;
 
 }

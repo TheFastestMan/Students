@@ -4,7 +4,9 @@ import org.modelmapper.ModelMapper;
 import ru.rail.dao.TrainerDao;
 
 import ru.rail.dto.CourseDto;
+import ru.rail.dto.StudentDto;
 import ru.rail.dto.TrainerDto;
+import ru.rail.entity.Student;
 import ru.rail.entity.Trainer;
 
 
@@ -21,5 +23,20 @@ public class TrainerService {
     }
 
 
+    public Long saveTrainerService(TrainerDto trainerDto) {
+        Trainer trainer = convertTrainertDtoToTrainer(trainerDto);
+        return trainerDao.saveTrainer(trainer);
+    }
+
+    public void deleteTrainerService(Long trainerId) {
+        trainerDao.deleteTrainer(trainerId);
+    }
+
+    public Trainer findTrainerById(Long trainerId) {
+        return trainerDao.getTrainerById(trainerId);
+    }
+        public Trainer convertTrainertDtoToTrainer(TrainerDto trainerDto) {
+        return modelMapper.map(trainerDto, Trainer.class);
+    }
 
 }
