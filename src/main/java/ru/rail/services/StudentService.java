@@ -4,23 +4,17 @@ import org.modelmapper.ModelMapper;
 import ru.rail.dao.CourseDao;
 import ru.rail.dao.StudentDao;
 
-import ru.rail.dao.TrainerDao;
-import ru.rail.dto.CourseDto;
 import ru.rail.dto.StudentDto;
-import ru.rail.dto.TrainerDto;
 import ru.rail.entity.Course;
 import ru.rail.entity.Student;
-import ru.rail.entity.Trainer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class StudentService {
     private static final StudentService INSTANCE = new StudentService();
     private final StudentDao studentDao = StudentDao.getInstance();
     private final CourseDao courseDao = CourseDao.getInstance();
-    private final TrainerDao trainerDao = TrainerDao.getInstance();
     private ModelMapper modelMapper = new ModelMapper();
 
     public static StudentService getInstance() {
@@ -78,14 +72,6 @@ public class StudentService {
         for (Student student : studentsToDelete) {
             studentDao.deleteStudent(student.getId());
         }
-    }
-
-    public Trainer saveTrainerWithCoursesService(TrainerDto trainerDto, List<CourseDto> courseDtos) {
-        Trainer trainer = modelMapper.map(trainerDto, Trainer.class);
-        List<Course> courses = courseDtos.stream()
-                .map(courseDto -> modelMapper.map(courseDto, Course.class))
-                .collect(Collectors.toList());
-        return trainerDao.saveTrainerWithCourses(trainer, courses);
     }
 
 

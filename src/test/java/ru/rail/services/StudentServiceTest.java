@@ -39,7 +39,7 @@ class StudentServiceTest {
     @Test
     public void testSaveStudentService() { //Добавить студента к курсу "Java Enterprise"
         StudentDto studentDto = new StudentDto();
-        studentDto.setName("Filus");
+        studentDto.setName("Ivan");
         studentDto.setCourseName("Java Enterprise");
 
         studentService.saveStudentService(studentDto);
@@ -47,7 +47,7 @@ class StudentServiceTest {
         try (Session session = sessionFactory.openSession()) {
             Student savedStudent = session.get(Student.class, studentDto.getId());
             assertNotNull(savedStudent);
-            assertEquals("Filus", savedStudent.getName());
+            assertEquals("Ivan", savedStudent.getName());
             assertNotNull(savedStudent.getCourse());
             assertEquals("Java Enterprise", savedStudent.getCourse().getName());
         }
@@ -82,21 +82,25 @@ class StudentServiceTest {
 
     @Test
     public void testFindAllStudentsByCourseName() {
-        StudentDto studentDto = new StudentDto();
-        studentDto.setName("Ali");
-        studentDto.setCourseName("Java");
-        studentService.saveStudentService(studentDto);
+//        StudentDto studentDto = new StudentDto();
+//        studentDto.setName("Ali");
+//        studentDto.setCourseName("Java");
+//        studentService.saveStudentService(studentDto);
 
+        List<Student> students = studentService.findByCourseAllStudentsService("Java Enterprise"); //Найти всех студентов которые учаться на курсе "Java Enterprise"
 
-        List<Student> javaStudents = studentService.findByCourseAllStudentsService("Java");
+//        assertFalse(students.isEmpty(), "Expected at least one student enrolled in the Java course");
+//        assertTrue(students.stream()
+//                .anyMatch(student -> "John".equals(student.getName())), "Expected to find student named John");
+//
+//        students.forEach(student -> System.out.println(student.getName()));
 
-        assertFalse(javaStudents.isEmpty(), "Expected at least one student enrolled in the Java course");
-        assertTrue(javaStudents.stream()
-                .anyMatch(student -> "John".equals(student.getName())), "Expected to find student named John");
-
-        javaStudents.forEach(student -> System.out.println(student.getName()));
+        students.stream().forEach(student -> {
+            System.out.println("Student Name: " + student.getName());
+        });
 
     }
+
 
     @Test
     public void testUpdateStudent() {

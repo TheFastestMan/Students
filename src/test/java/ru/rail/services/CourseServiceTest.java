@@ -30,13 +30,13 @@ class CourseServiceTest {
 
     @Test
     public void testDeleteCourse() { // Удалить курс "Java Enterprise"
-        courseService.deleteCourseService(1L);
+        courseService.deleteCourseService(4L);
     }
 
     @Test
     public void testSaveCourse() {
         CourseDto initialCourse = new CourseDto();
-        initialCourse.setName("Java");
+        initialCourse.setName("Java Enterprise");
         courseService.saveCourseService(initialCourse);
     }
 

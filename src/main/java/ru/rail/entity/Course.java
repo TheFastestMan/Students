@@ -24,14 +24,4 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<Student> students;
 
-    @ManyToMany(mappedBy = "courses")
-    private List<Trainer> trainers;
-
-    public Course(Long id, String name, List<Student> students) {
-        this.id = id;
-        this.name = name;
-        this.students = students;
-    }
-
-
 }

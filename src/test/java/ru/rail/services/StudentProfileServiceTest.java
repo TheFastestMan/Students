@@ -13,6 +13,8 @@ import ru.rail.entity.Course;
 import ru.rail.entity.Student;
 import ru.rail.entity.StudentProfile;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentProfileServiceTest {
@@ -37,12 +39,12 @@ class StudentProfileServiceTest {
     public void testSaveStudentProfileService() {
         // 1. a course
         CourseDto courseDto = new CourseDto();
-        courseDto.setName("Spring Boot");
+        courseDto.setName("Java Enterprise");
         Course savedCourse = courseService.saveCourseService(courseDto);
 
         // 2. a student
         StudentDto studentDto = new StudentDto();
-        studentDto.setName("Harrison");
+        studentDto.setName("Lee");
         studentDto.setCourseName(savedCourse.getName());
         Student savedStudent = studentService.saveStudentService(studentDto);
 
@@ -52,15 +54,16 @@ class StudentProfileServiceTest {
         // 3. a student
         StudentProfileDto studentProfileDto = new StudentProfileDto();
         studentProfileDto.setStudentAcademicPerformance(7);
-        studentProfileDto.setStudentName("Harrison");
+        studentProfileDto.setStudentName("Lee");
         StudentProfile savedStudentProfile = studentProfileService.saveStudentProfileService(studentProfileDto);
 
         // Validate
-        assertEquals("Harrison", savedStudentProfile.getStudent().getName());
+        assertEquals("Lee", savedStudentProfile.getStudent().getName());
         assertEquals(Integer.valueOf(7), savedStudentProfile.getAcademicPerformance());
     }
 
-    @AfterAll
+
+        @AfterAll
     public static void tearDown() {
         if (sessionFactory != null) {
             sessionFactory.close();

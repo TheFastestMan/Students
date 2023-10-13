@@ -20,10 +20,6 @@ public class TrainerService {
         return INSTANCE;
     }
 
-    public Trainer saveTrainerWithCoursesService(TrainerDto trainerDto, List<CourseDto> courseDtos) {
-        Trainer trainer = modelMapper.map(trainerDto, Trainer.class);
-        return trainerDao.saveTrainer(trainer);
-    }
 
 
 }
